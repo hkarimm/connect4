@@ -29,7 +29,15 @@ export default class App {
         console.clear();
         console.log('CONNECT 4\n');
         this.playerX = new Player(prompt('Spelare X:s namn: '), 'X');
-        this.playerO = new Player(prompt('Spelare O:s namn: '), 'O');
+        
+        const playWithComputer: string = prompt('Vill du spela mot en dator? (ja/nej)? ');
+        if (playWithComputer.toLowerCase() === 'ja') {
+            this.playerO = new Player('Dator', 'O');
+            this.isPlayerOComputer = true;
+        } else {
+            this.playerO = new Player(prompt('Spelare O:s namn: '), 'O');
+            this.isPlayerOComputer = false;
+        }
     }
 
     startGameLoop(): void {
@@ -38,12 +46,22 @@ export default class App {
             this.board.render();
             const player: Player = this.board.currentPlayerColor === 'X' ? this.playerX : this.playerO;
             console.log(`It's ${player.name}'s (${player.color}) turn.`);
-            const move: string = prompt(`Ange ditt drag ${player.color} ${player.name} - skriv in kolumn (1-7): `);
-            const column: number = +move.trim() - 1;
+            
+            let column: number;
 
-            if (column < 0 || column >= 7 || isNaN(column)) {
-                console.log('Invalid column. Please enter a number between 1 and 7.');
-                continue;
+            if (this.isPlayerOComputer && player.color === 'O') {
+                
+                column = this.getRandomColumn();
+                console.log(`Datorn väljer kolumn: ${column + 1}`);
+            } else {
+                
+                const move: string = prompt(`Ange ditt drag ${player.color} ${player.name} - skriv in kolumn (1-7): `);
+                column = +move.trim() - 1;
+
+                if (column < 0 || column >= 7 || isNaN(column)) {
+                    console.log('Invalid column. Please enter a number between 1 and 7.');
+                    continue;
+                }
             }
 
             if (!this.board.makeMove(player.color, column)) {
@@ -53,6 +71,16 @@ export default class App {
 
             if (this.board.gameOver) break;
         }
+    }
+
+    private getRandomColumn(): number {
+        let availableColumns: number[] = [];
+        for (let col = 0; col < 7; col++) {
+            if (this.board.isColumnPlayable(col)) {
+                availableColumns.push(col);
+            }
+        }
+        return availableColumns[Math.floor(Math.random() * availableColumns.length)];
     }
 
     whoHasWonOnGameOver(): void {
@@ -66,6 +94,5 @@ export default class App {
         }
     }
 }
-
 
 new App();
