@@ -1,4 +1,3 @@
-import prompt from './helpers/prompt.js';
+import App from './App.js';
 
-let name = prompt('Vad heter du? ');
-console.log(`Hej ${name}!`);
+new App();

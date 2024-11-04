@@ -6,9 +6,11 @@ export default class App {
     private board: Board;
     private playerX!: Player;
     private playerO!: Player;
+    private isPlayerOComputer: boolean;
 
     constructor() {
         this.board = new Board();
+        this.isPlayerOComputer = false;
         this.start();
     }
 

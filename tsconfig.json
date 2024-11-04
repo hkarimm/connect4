@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "es2019",
+    "lib": ["es2019", "dom"],
+    "module": "esnext",              // Change from "commonjs" to "esnext" to output ES modules
+    "outDir": "./dist",
+    "rootDir": "./typescript",
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "./typescript/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
